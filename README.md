@@ -1,4 +1,77 @@
-# AGENTS.md — Conventions de développement LahjaLens
+# LahjaLens
+
+Plateforme de Big Data Analytics dédiée à l’analyse automatique des commentaires marocains en darija, arabe et français.
+
+![Architecture LahjaLens](docs/architecture.png)
+
+## Architecture
+
+LahjaLens suit une architecture data moderne en couches :
+
+```text
+Sources de commentaires et datasets
+              │
+       ┌──────┴──────┐
+       │             │
+     Batch        Streaming
+  Python/Parquet  Kafka/KRaft
+       │             │
+       └──────┬──────┘
+              ▼
+        HDFS Data Lake
+     Bronze → Silver → Gold
+              │
+              ▼
+       Apache Spark 3.5.7
+   ETL · SQL · Structured Streaming
+              │
+       ┌──────┴──────┐
+       │             │
+   Spark MLlib     MLflow
+  Sentiment       Expériences
+       │             │
+       └──────┬──────┘
+              ▼
+         PostgreSQL
+              │
+              ▼
+    Streamlit + Plotly Dashboard
+```
+
+## Stack technique
+
+- Python 3.11 et Parquet pour l’ingestion batch
+- Hadoop HDFS 3.4.2 comme data lake
+- PySpark 3.5.7 en mode local pour les traitements
+- Apache Kafka 3.9.x en mode KRaft pour le streaming
+- Spark MLlib pour la classification de sentiment
+- MLflow pour le suivi des expériences ML
+- PostgreSQL pour la restitution analytique
+- Streamlit et Plotly pour les KPI, tendances, thèmes et sources
+- Docker Compose pour Kafka et PostgreSQL
+
+## Organisation du développement
+
+Le projet est construit progressivement, fichier par fichier. Chaque étape doit être vérifiée avant de poursuivre. Les données réelles, les données synthétiques de test et les résultats observés doivent rester explicitement distingués.
+
+Le fichier maître attendu est `DARIJAPULSE_CODEX_MASTER_SPEC.md`. Il doit être placé à la racine du dépôt avant toute implémentation dépendant de contrats, chemins HDFS ou critères détaillés.
+
+## Principes
+
+- Ne pas réinstaller Hadoop : HDFS est déjà configuré sous WSL2.
+- Respecter les contrats JSON et Parquet définis par la spécification.
+- N’entraîner les modèles que sur des exemples avec des labels fiables.
+- Utiliser des événements Kafka issus d’une source autorisée ou d’un replay explicite.
+- Ne jamais inventer de dataset, résultat, métrique ou service fonctionnel.
+- Conserver un code Python 3.11 typé, modulaire, testable et compatible avec les ressources disponibles.
+
+## État actuel
+
+Le dépôt contient actuellement la documentation de démarrage et l’infographie de l’architecture. Les composants data, ML, analytics et streaming seront ajoutés progressivement.
+
+---
+
+# Conventions de développement
 
 ## Mission du projet
 
