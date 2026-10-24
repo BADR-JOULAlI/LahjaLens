@@ -3,7 +3,7 @@
 venv/
 env/
 
-# Python cache
+# Python cache & packages
 __pycache__/
 *.py[cod]
 *$py.class
@@ -11,21 +11,28 @@ __pycache__/
 dist/
 build/
 
-# Spark & Checkpoints
+# Spark, Checkpoints & Métadonnées
 checkpoint/
 checkpoints/
+*/checkpoints/
 metastore_db/
 derby.log
+*.jar
 
-# MLflow
+# MLflow & Modèles sauvegardés locaux
 mlruns/
 mlartifacts/
+
+# Volumes Docker persistants (HDFS DataNodes, Kafka, Postgres)
+volumes/
+*/volumes/
+.docker-data/
 
 # Variables d'environnement & Secrets
 .env
 *.local.yaml
 
-# IDE
+# IDE & Editeurs
 .vscode/
 .idea/
 
