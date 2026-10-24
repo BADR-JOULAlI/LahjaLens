@@ -10,23 +10,25 @@ Le développement suit une règle stricte : un seul fichier est créé ou modifi
 
 ![Architecture LahjaLens](docs/architecture.png)
 
-Le flux principal est :
+Le flux principal, conforme au diagramme de référence, est :
 
 ```text
-Sources → Batch / Streaming → HDFS Bronze → Silver → Gold
-                                      ↓
-                              Apache Spark
-                         ↙        ↓        ↘
-                  Spark MLlib  MLflow  PostgreSQL
-                                             ↓
-                                  Streamlit + Plotly
+Corpus historique ──► Batch Python / Spark ──► HDFS Bronze
+         │
+         └──────────► Replay Python → Kafka → Spark Structured Streaming
+                                                  │
+HDFS Bronze ──► Nettoyage Spark ──► HDFS Silver ──► Spark SQL ──► HDFS Gold
+                                      │                              │
+Corpus annoté ──► Spark MLlib ────────┘                              │
+                    │                                                 ▼
+                    └────────────► MLflow              PostgreSQL → Streamlit + Plotly
 ```
 
 ## Ordre général de création
 
 ### Phase 0 — Configuration et documentation
 
-Objectif : préparer un projet reproductible et documenté sans réinstaller les services déjà disponibles.
+Objectif : préparer un projet reproductible et documenté avec Kafka, HDFS, Spark, MLflow, PostgreSQL et Streamlit.
 
 | Étape | Fichier | Résultat attendu |
 |---|---|---|
@@ -45,7 +47,7 @@ Critère d’acceptation : l’environnement, les dépendances, les conventions 
 
 ### Phase 1 — Data Lake et ingestion batch
 
-Objectif : stocker réellement les données historiques dans HDFS, puis les relire avec Spark.
+Objectif : stocker réellement le corpus historique dans HDFS et préparer son replay vers Kafka.
 
 | Étape | Fichier / composant | Résultat attendu |
 |---|---|---|
@@ -93,13 +95,13 @@ Critère d’acceptation : les KPI du dashboard proviennent de données calculé
 
 ### Phase 4 — Streaming Kafka
 
-Objectif : intégrer de véritables événements Kafka ou un replay explicitement identifié.
+Objectif : rejouer explicitement le corpus historique dans Kafka et le traiter avec Spark Structured Streaming.
 
 | Étape | Fichier / composant | Résultat attendu |
 |---|---|---|
-| 32 | `src/streaming/kafka_config.py` | Configuration producteur / consommateur |
-| 33 | `src/streaming/producer.py` | Production d’événements autorisés |
-| 34 | `src/streaming/spark_stream.py` | Structured Streaming avec le connecteur officiel |
+| 32 | `src/streaming/kafka_config.py` | Configuration du broker Kafka en KRaft |
+| 33 | `src/streaming/producer.py` | Replay Python vers le topic `comments.raw` |
+| 34 | `src/streaming/spark_stream.py` | Spark Structured Streaming avec le connecteur officiel |
 | 35 | `src/streaming/checkpointing.py` | Checkpoints et reprise contrôlée |
 
 Critère d’acceptation : les événements sont traçables, le checkpoint est configuré et le pipeline ne présente pas de replay synthétique comme une donnée réelle.
@@ -133,6 +135,7 @@ Critère d’acceptation : les tests unitaires et d’intégration sont distingu
 - Ne pas réinstaller Hadoop : HDFS 3.4.2 est un prérequis existant.
 - Utiliser Python 3.11, Java 11 et PySpark 3.5.7.
 - Utiliser `spark-sql-kafka-0-10_2.12` pour l’intégration Kafka avec Spark.
+- Utiliser Kafka comme couche de replay et de streaming ; le corpus historique reste la source initiale.
 - Réserver le GPU RTX 5070 aux extensions Transformer ; le MVP repose sur Spark MLlib.
 - Ne jamais inscrire de secret dans Git.
 - Ne jamais inventer un dataset, un label, une métrique ou un résultat.

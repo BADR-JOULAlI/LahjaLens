@@ -6,36 +6,19 @@ Plateforme de Big Data Analytics dédiée à l’analyse automatique des comment
 
 ## Architecture
 
-LahjaLens suit une architecture data moderne en couches :
+LahjaLens suit l’architecture de référence validée pour l’analyse de sentiments des commentaires en darija :
 
 ```text
-Sources de commentaires et datasets
-              │
-       ┌──────┴──────┐
-       │             │
-     Batch        Streaming
-  Python/Parquet  Kafka/KRaft
-       │             │
-       └──────┬──────┘
-              ▼
-        HDFS Data Lake
-     Bronze → Silver → Gold
-              │
-              ▼
-       Apache Spark 3.5.7
-   ETL · SQL · Structured Streaming
-              │
-       ┌──────┴──────┐
-       │             │
-   Spark MLlib     MLflow
-  Sentiment       Expériences
-       │             │
-       └──────┬──────┘
-              ▼
-         PostgreSQL
-              │
-              ▼
-    Streamlit + Plotly Dashboard
+Corpus historique ──┬──► Batch Python / Spark ──► HDFS Bronze
+                    └──► Replay Python → Kafka ──► Spark Structured Streaming
+                                                       │
+HDFS Bronze ──► Nettoyage Spark ──► HDFS Silver ──► Spark SQL ──► HDFS Gold
+                                       │                            │
+Corpus annoté ──► Spark MLlib ────────┘                            │
+                         │                                          │
+                         └────────────► MLflow                      │
+                                                                    ▼
+                                                   PostgreSQL ──► Streamlit + Plotly
 ```
 
 ## Stack technique
@@ -43,7 +26,7 @@ Sources de commentaires et datasets
 - Python 3.11 et Parquet pour l’ingestion batch
 - Hadoop HDFS 3.4.2 comme data lake
 - PySpark 3.5.7 en mode local pour les traitements
-- Apache Kafka 3.9.x en mode KRaft pour le streaming
+- Apache Kafka 3.9.x en mode KRaft pour le replay et le streaming
 - Spark MLlib pour la classification de sentiment
 - MLflow pour le suivi des expériences ML
 - PostgreSQL pour la restitution analytique
@@ -61,7 +44,8 @@ Le fichier maître attendu est `DARIJAPULSE_CODEX_MASTER_SPEC.md`. Il doit être
 - Ne pas réinstaller Hadoop : HDFS est déjà configuré sous WSL2.
 - Respecter les contrats JSON et Parquet définis par la spécification.
 - N’entraîner les modèles que sur des exemples avec des labels fiables.
-- Utiliser des événements Kafka issus d’une source autorisée ou d’un replay explicite.
+- Utiliser Kafka pour le replay historique ou des événements issus d’une source autorisée.
+- Conserver un corpus annoté séparé, avec des labels de sentiment vérifiés, pour l’entraînement.
 - Ne jamais inventer de dataset, résultat, métrique ou service fonctionnel.
 - Conserver un code Python 3.11 typé, modulaire, testable et compatible avec les ressources disponibles.
 
