@@ -1,0 +1,41 @@
+# Environnements virtuels
+.venv/
+venv/
+env/
+
+# Python cache & packages
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Spark, Checkpoints & Métadonnées
+checkpoint/
+checkpoints/
+*/checkpoints/
+metastore_db/
+derby.log
+*.jar
+
+# MLflow & Modèles sauvegardés locaux
+mlruns/
+mlartifacts/
+
+# Volumes Docker persistants (HDFS DataNodes, Kafka, Postgres)
+volumes/
+*/volumes/
+.docker-data/
+
+# Variables d'environnement & Secrets
+.env
+*.local.yaml
+
+# IDE & Editeurs
+.vscode/
+.idea/
+
+# Données brutes volumineuses locales
+data/raw/*
+!data/raw/.gitkeep
