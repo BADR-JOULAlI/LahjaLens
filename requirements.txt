@@ -1,0 +1,30 @@
+# === PySpark & Data Lake ===
+pyspark==3.5.7
+pyarrow>=14.0.0
+fastparquet>=2024.2.0
+pandas>=2.1.0
+hdfs>=2.7.0
+
+# === Contrats de données & Validation ===
+pydantic>=2.5.0
+
+# === Streaming & Kafka ===
+kafka-python-ng>=2.2.0
+
+# === Machine Learning & MLOps ===
+mlflow>=2.10.0
+scikit-learn>=1.4.0
+
+# === Restitution & Base de données ===
+psycopg2-binary>=2.9.9
+sqlalchemy>=2.0.0
+streamlit>=1.32.0
+plotly>=5.19.0
+
+# === Configuration & Utilitaires ===
+pyyaml>=6.0.1
+python-dotenv>=1.0.0
+
+# === Tests & Qualité de code ===
+pytest>=8.0.0
+pytest-mock>=3.12.0

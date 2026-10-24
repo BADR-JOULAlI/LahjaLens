@@ -1,0 +1,34 @@
+# Environnements virtuels
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Spark & Checkpoints
+checkpoint/
+checkpoints/
+metastore_db/
+derby.log
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Variables d'environnement & Secrets
+.env
+*.local.yaml
+
+# IDE
+.vscode/
+.idea/
+
+# Données brutes volumineuses locales
+data/raw/*
+!data/raw/.gitkeep
