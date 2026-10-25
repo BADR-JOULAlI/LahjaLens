@@ -1,4 +1,3 @@
-
 services:
   kafka:
     image: apache/kafka:3.9.1
@@ -24,24 +23,141 @@ services:
       - kafka_data:/var/lib/kafka/data
     restart: unless-stopped
 
+  spark-master:
+    image: apache/spark:3.5.7
+    container_name: lahjalens-spark-master
+    hostname: spark-master
+    command: bash -lc "/opt/spark/sbin/start-master.sh && tail -f /dev/null"
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+      SPARK_MASTER_HOST: spark-master
+      SPARK_MASTER_PORT: 7077
+      SPARK_MASTER_WEBUI_PORT: 8080
+    volumes:
+      - spark_master_logs:/opt/spark/logs
+      - ./data:/opt/lahjalens/data
+    restart: unless-stopped
+
+  spark-worker-1:
+    image: apache/spark:3.5.7
+    container_name: lahjalens-spark-worker-1
+    hostname: spark-worker-1
+    depends_on:
+      - spark-master
+    command: bash -lc "/opt/spark/sbin/start-worker.sh spark://spark-master:7077 && tail -f /dev/null"
+    ports:
+      - "8081:8081"
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+      SPARK_WORKER_WEBUI_PORT: 8081
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 2g
+    volumes:
+      - spark_worker_1_logs:/opt/spark/logs
+      - ./data:/opt/lahjalens/data
+    restart: unless-stopped
+
+  spark-worker-2:
+    image: apache/spark:3.5.7
+    container_name: lahjalens-spark-worker-2
+    hostname: spark-worker-2
+    depends_on:
+      - spark-master
+    command: bash -lc "/opt/spark/sbin/start-worker.sh spark://spark-master:7077 && tail -f /dev/null"
+    ports:
+      - "8082:8081"
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+      SPARK_WORKER_WEBUI_PORT: 8081
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 2g
+    volumes:
+      - spark_worker_2_logs:/opt/spark/logs
+      - ./data:/opt/lahjalens/data
+    restart: unless-stopped
+
+  namenode:
+    image: apache/hadoop:3.4.2-lean
+    container_name: lahjalens-namenode
+    hostname: namenode
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    command: >-
+      bash -lc "mkdir -p /data/name &&
+      printf '%s' '<configuration><property><name>fs.defaultFS</name><value>hdfs://namenode:9000</value></property><property><name>dfs.replication</name><value>2</value></property><property><name>dfs.namenode.name.dir</name><value>file:///data/name</value></property><property><name>dfs.namenode.rpc-address</name><value>namenode:9000</value></property><property><name>dfs.namenode.http-address</name><value>namenode:9870</value></property></configuration>' > /opt/hadoop/etc/hadoop/core-site.xml &&
+      hdfs namenode -format -force -nonInteractive &&
+      hdfs namenode"
+    volumes:
+      - hdfs_namenode:/data/name
+    restart: unless-stopped
+
+  datanode-1:
+    image: apache/hadoop:3.4.2-lean
+    container_name: lahjalens-datanode-1
+    hostname: datanode-1
+    depends_on:
+      - namenode
+    command: >-
+      bash -lc "mkdir -p /data/data &&
+      printf '%s' '<configuration><property><name>fs.defaultFS</name><value>hdfs://namenode:9000</value></property><property><name>dfs.replication</name><value>2</value></property><property><name>dfs.datanode.data.dir</name><value>file:///data/data</value></property><property><name>dfs.datanode.address</name><value>0.0.0.0:9866</value></property><property><name>dfs.datanode.http.address</name><value>0.0.0.0:9864</value></property></configuration>' > /opt/hadoop/etc/hadoop/core-site.xml &&
+      hdfs datanode"
+    volumes:
+      - hdfs_datanode_1:/data/data
+    restart: unless-stopped
+
+  datanode-2:
+    image: apache/hadoop:3.4.2-lean
+    container_name: lahjalens-datanode-2
+    hostname: datanode-2
+    depends_on:
+      - namenode
+    command: >-
+      bash -lc "mkdir -p /data/data &&
+      printf '%s' '<configuration><property><name>fs.defaultFS</name><value>hdfs://namenode:9000</value></property><property><name>dfs.replication</name><value>2</value></property><property><name>dfs.datanode.data.dir</name><value>file:///data/data</value></property><property><name>dfs.datanode.address</name><value>0.0.0.0:9866</value></property><property><name>dfs.datanode.http.address</name><value>0.0.0.0:9864</value></property></configuration>' > /opt/hadoop/etc/hadoop/core-site.xml &&
+      hdfs datanode"
+    volumes:
+      - hdfs_datanode_2:/data/data
+    restart: unless-stopped
+
   postgres:
     image: postgres:16
     container_name: lahjalens-postgres
     ports:
       - "5434:5432"
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-lahjalens_db}
-      POSTGRES_USER: ${POSTGRES_USER:-lahja_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
+      POSTGRES_DB: lahjalens_db
+      POSTGRES_USER: lahja_user
+      POSTGRES_PASSWORD: change_me
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      test: ["CMD-SHELL", "pg_isready -U lahja_user -d lahjalens_db"]
       interval: 10s
       timeout: 5s
       retries: 5
     restart: unless-stopped
 
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.10.2
+    container_name: lahjalens-mlflow
+    ports:
+      - "5000:5000"
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:////mlflow/mlflow.db --default-artifact-root /mlflow/artifacts
+    volumes:
+      - mlflow_data:/mlflow
+    restart: unless-stopped
+
 volumes:
   kafka_data:
+  spark_master_logs:
+  spark_worker_1_logs:
+  spark_worker_2_logs:
+  hdfs_namenode:
+  hdfs_datanode_1:
+  hdfs_datanode_2:
   postgres_data:
+  mlflow_data:
