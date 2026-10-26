@@ -83,44 +83,52 @@ services:
     image: apache/hadoop:3.4.2-lean
     container_name: lahjalens-namenode
     hostname: namenode
+    user: root
     ports:
       - "9870:9870"
       - "9000:9000"
     command: >-
-      bash -lc "mkdir -p /data/name &&
-      printf '%s' '<configuration><property><name>fs.defaultFS</name><value>hdfs://namenode:9000</value></property><property><name>dfs.replication</name><value>2</value></property><property><name>dfs.namenode.name.dir</name><value>file:///data/name</value></property><property><name>dfs.namenode.rpc-address</name><value>namenode:9000</value></property><property><name>dfs.namenode.http-address</name><value>namenode:9870</value></property></configuration>' > /opt/hadoop/etc/hadoop/core-site.xml &&
-      hdfs namenode -format -force -nonInteractive &&
-      hdfs namenode"
+      bash -lc "mkdir -p /tmp/hadoop-hadoop/dfs/name &&
+      printf '%s' '<configuration><property><name>fs.defaultFS</name><value>hdfs://namenode:9000</value></property></configuration>' > /opt/hadoop/etc/hadoop/core-site.xml &&
+      printf '%s' '<configuration><property><name>dfs.replication</name><value>2</value></property><property><name>dfs.namenode.name.dir</name><value>file:///tmp/hadoop-hadoop/dfs/name</value></property><property><name>dfs.namenode.rpc-address</name><value>namenode:9000</value></property><property><name>dfs.namenode.http-address</name><value>namenode:9870</value></property></configuration>' > /opt/hadoop/etc/hadoop/hdfs-site.xml &&
+      chown -R hadoop:hadoop /tmp/hadoop-hadoop/dfs/name &&
+      su -s /bin/bash hadoop -c 'if [ ! -f /tmp/hadoop-hadoop/dfs/name/current/VERSION ]; then /opt/hadoop/bin/hdfs namenode -format -force -nonInteractive; fi && /opt/hadoop/bin/hdfs namenode'"
     volumes:
-      - hdfs_namenode:/data/name
+      - hdfs_namenode:/tmp/hadoop-hadoop/dfs/name
     restart: unless-stopped
 
   datanode-1:
     image: apache/hadoop:3.4.2-lean
     container_name: lahjalens-datanode-1
     hostname: datanode-1
+    user: root
     depends_on:
       - namenode
     command: >-
-      bash -lc "mkdir -p /data/data &&
-      printf '%s' '<configuration><property><name>fs.defaultFS</name><value>hdfs://namenode:9000</value></property><property><name>dfs.replication</name><value>2</value></property><property><name>dfs.datanode.data.dir</name><value>file:///data/data</value></property><property><name>dfs.datanode.address</name><value>0.0.0.0:9866</value></property><property><name>dfs.datanode.http.address</name><value>0.0.0.0:9864</value></property></configuration>' > /opt/hadoop/etc/hadoop/core-site.xml &&
-      hdfs datanode"
+      bash -lc "mkdir -p /tmp/hadoop-hadoop/dfs/data &&
+      printf '%s' '<configuration><property><name>fs.defaultFS</name><value>hdfs://namenode:9000</value></property></configuration>' > /opt/hadoop/etc/hadoop/core-site.xml &&
+      printf '%s' '<configuration><property><name>dfs.replication</name><value>2</value></property><property><name>dfs.datanode.data.dir</name><value>file:///tmp/hadoop-hadoop/dfs/data</value></property><property><name>dfs.datanode.address</name><value>0.0.0.0:9866</value></property><property><name>dfs.datanode.http.address</name><value>0.0.0.0:9864</value></property></configuration>' > /opt/hadoop/etc/hadoop/hdfs-site.xml &&
+      chown -R hadoop:hadoop /tmp/hadoop-hadoop/dfs/data &&
+      su -s /bin/bash hadoop -c '/opt/hadoop/bin/hdfs datanode'"
     volumes:
-      - hdfs_datanode_1:/data/data
+      - hdfs_datanode_1:/tmp/hadoop-hadoop/dfs/data
     restart: unless-stopped
 
   datanode-2:
     image: apache/hadoop:3.4.2-lean
     container_name: lahjalens-datanode-2
     hostname: datanode-2
+    user: root
     depends_on:
       - namenode
     command: >-
-      bash -lc "mkdir -p /data/data &&
-      printf '%s' '<configuration><property><name>fs.defaultFS</name><value>hdfs://namenode:9000</value></property><property><name>dfs.replication</name><value>2</value></property><property><name>dfs.datanode.data.dir</name><value>file:///data/data</value></property><property><name>dfs.datanode.address</name><value>0.0.0.0:9866</value></property><property><name>dfs.datanode.http.address</name><value>0.0.0.0:9864</value></property></configuration>' > /opt/hadoop/etc/hadoop/core-site.xml &&
-      hdfs datanode"
+      bash -lc "mkdir -p /tmp/hadoop-hadoop/dfs/data &&
+      printf '%s' '<configuration><property><name>fs.defaultFS</name><value>hdfs://namenode:9000</value></property></configuration>' > /opt/hadoop/etc/hadoop/core-site.xml &&
+      printf '%s' '<configuration><property><name>dfs.replication</name><value>2</value></property><property><name>dfs.datanode.data.dir</name><value>file:///tmp/hadoop-hadoop/dfs/data</value></property><property><name>dfs.datanode.address</name><value>0.0.0.0:9866</value></property><property><name>dfs.datanode.http.address</name><value>0.0.0.0:9864</value></property></configuration>' > /opt/hadoop/etc/hadoop/hdfs-site.xml &&
+      chown -R hadoop:hadoop /tmp/hadoop-hadoop/dfs/data &&
+      su -s /bin/bash hadoop -c '/opt/hadoop/bin/hdfs datanode'"
     volumes:
-      - hdfs_datanode_2:/data/data
+      - hdfs_datanode_2:/tmp/hadoop-hadoop/dfs/data
     restart: unless-stopped
 
   postgres:
