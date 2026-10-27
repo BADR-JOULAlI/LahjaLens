@@ -426,5 +426,5 @@ La prochaine action sera de créer uniquement :
 
     src/schemas/events.py
 
-Avant cette création, il faut vérifier la présence de DARIJAPULSE_CODEX_MASTER_SPEC.md. S’il est absent, nous créerons une version pédagogique minimale uniquement si elle ne contredit aucun contrat officiel, et nous la marquerons comme provisoire.
+Avant cette création, il faut vérifier la présence de MASTER_SPEC.md. S’il est absent, nous créerons une version pédagogique minimale uniquement si elle ne contredit aucun contrat officiel, et nous la marquerons comme provisoire.
 

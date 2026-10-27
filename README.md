@@ -167,4 +167,4 @@ Ne pas avancer automatiquement vers le fichier suivant. L’utilisateur doit exa
 
 ## État initial
 
-Le fichier `DARIJAPULSE_CODEX_MASTER_SPEC.md` doit être placé à la racine du projet avant toute étape qui dépend de contrats, chemins ou critères non reproduits dans ce document. Tant qu’il est absent, demander sa mise à disposition lorsqu’une décision ne peut pas être prise de manière fiable.
+Le fichier `MASTER_SPEC.md` doit être placé à la racine du projet avant toute étape qui dépend de contrats, chemins ou critères non reproduits dans ce document. Tant qu’il est absent, demander sa mise à disposition lorsqu’une décision ne peut pas être prise de manière fiable.
