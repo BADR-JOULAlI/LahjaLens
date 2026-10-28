@@ -32,7 +32,7 @@ class Sentiment(StrEnum):
 
 class EventValidationError(ValueError):
     """Erreur levée lorsqu'un événement ne respecte pas son contrat."""
-
+ 
 
 def _require_text(payload: Mapping[str, Any], field_name: str) -> str:
     """Retourne un champ texte obligatoire après validation."""

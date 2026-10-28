@@ -36,6 +36,31 @@ volumes/
 .vscode/
 .idea/
 
-# Données brutes volumineuses locales
+# Données brutes locales, sauf le corpus Hespress v1 partagé.
 data/raw/*
 !data/raw/.gitkeep
+!data/raw/hespress/
+data/raw/hespress/*
+!data/raw/hespress/v1/
+data/raw/hespress/v1/*
+!data/raw/hespress/v1/comments_politique.csv
+!data/raw/hespress/v1/stories_politique.csv
+!data/raw/hespress/v1/comments_economie.csv
+!data/raw/hespress/v1/stories_economie.csv
+!data/raw/hespress/v1/comments_societe.csv
+!data/raw/hespress/v1/stories_societe.csv
+!data/raw/hespress/v1/comments_sport.csv
+!data/raw/hespress/v1/stories_sport.csv
+!data/raw/hespress/v1/comments_art-et-culture.csv
+!data/raw/hespress/v1/stories_art-et-culture.csv
+!data/raw/hespress/v1/manifest.json
+!data/raw/hespress/v1/source_metadata_20261028T213518299311Z.json
+
+# Annotations individuelles et sorties locales ; échantillon initial partagé.
+data/annotated/*
+!data/annotated/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/hespress/
+data/processed/hespress/*
+!data/processed/hespress/comments_sample.csv
