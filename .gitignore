@@ -39,3 +39,9 @@ volumes/
 # Données brutes volumineuses locales
 data/raw/*
 !data/raw/.gitkeep
+
+# Corpus annotés et préparations locales ; publier les scripts et rapports.
+data/annotated/*
+!data/annotated/.gitkeep
+data/processed/*
+!data/processed/.gitkeep

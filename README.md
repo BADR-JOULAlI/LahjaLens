@@ -51,7 +51,27 @@ Le fichier maître attendu est `DARIJAPULSE_CODEX_MASTER_SPEC.md`. Il doit être
 
 ## État actuel
 
-Le dépôt contient actuellement la documentation de démarrage et l’infographie de l’architecture. Les composants data, ML, analytics et streaming seront ajoutés progressivement.
+Le dépôt contient la documentation, l’infographie, la configuration du cluster Docker, les contrats d’événements et le script de préparation du corpus Hespress. Les jobs Spark, les modèles ML et le dashboard restent à développer.
+
+## Données Hespress : première étape
+
+Les catégories politique, économie, société, sport et art et culture représentent **139 166 commentaires et 5 000 articles**. Les originaux locaux sont conservés dans `data/raw/hespress/v1/`, avec leur provenance et leurs empreintes SHA-256.
+
+Pour reproduire la préparation, avec Python 3.11 ou plus récent et sans dépendance supplémentaire :
+
+```powershell
+python scripts/prepare_hespress.py
+```
+
+Pour vérifier les fichiers déjà récupérés sans accès réseau :
+
+```powershell
+python scripts/prepare_hespress.py --audit-only
+```
+
+Le script produit aussi un échantillon de 1 000 commentaires à annoter. Le sentiment et le thème du commentaire ne sont pas inventés ; la rubrique de l’article reste une information de contexte. Les fichiers de données restent exclus de Git.
+
+Voir le [guide du premier TP](docs/datasets/HESPRESS_GUIDE.md), le [rapport d’audit](docs/datasets/HESPRESS_AUDIT.md) et le [choix des datasets](docs/datasets/DATASET_DECISION.md).
 
 ---
 
