@@ -38,11 +38,27 @@ data/processed/hespress/
     comments_sample.csv                   1 000 commentaires pour préparer l'annotation
 ```
 
-Les originaux restent intacts. `data/raw`, `data/processed` et `data/annotated` sont exclus de Git ; les scripts, tests et rapports peuvent être partagés dans le dépôt. Chaque camarade peut récupérer ses propres copies avec la même commande.
+Les dix CSV originaux, leur manifeste, l'instantané des métadonnées de téléchargement et l'échantillon initial de 1 000 commentaires sont partagés dans GitHub sur la branche `feature/docker-compose`. Les originaux représentent environ 91 Mo. Les annotations individuelles dans `data/annotated/`, les autres datasets et les sorties générées comme `audit.json` restent exclus de Git.
+
+La licence CC0 déclarée par le déposant du [dataset source](https://www.kaggle.com/datasets/tariqmassaoudi/hespress) concerne ce corpus. Le manifeste et l'instantané des métadonnées conservent cette déclaration et l'attribution à Tariq Massaoudi. Les fichiers sont redistribués sans modifier les originaux. `.gitattributes` désactive la conversion automatique des fins de ligne pour ces CSV afin de préserver les empreintes SHA-256 sur tous les systèmes.
 
 Il s'agit encore de fichiers sur le PC. L'importation HDFS sera une étape distincte.
 
-## 2. Reproduire le téléchargement
+## 2. Récupérer les données partagées
+
+Pour un camarade qui n'a pas encore le dépôt :
+
+```powershell
+git clone --branch feature/docker-compose https://github.com/BADR-JOULAlI/LahjaLens.git
+cd LahjaLens
+python scripts/prepare_hespress.py --audit-only
+```
+
+La commande `git clone` récupère le code et les données partagées. Aucun compte Kaggle n'est nécessaire pour utiliser cette copie. La commande d'audit vérifie les dix empreintes, relit les CSV et reproduit l'échantillon avec la graine 42.
+
+Si le dépôt est déjà présent, mettre à jour la branche `feature/docker-compose` avant de lancer l'audit. Conserver ou valider ses modifications locales avant de changer de branche.
+
+### Télécharger à nouveau depuis Kaggle si nécessaire
 
 Dans PowerShell, depuis la racine du projet :
 
@@ -50,7 +66,7 @@ Dans PowerShell, depuis la racine du projet :
 python scripts/prepare_hespress.py
 ```
 
-Le script utilise uniquement la bibliothèque standard et fonctionne avec Python 3.11 ou plus récent. Il ne nécessite ni pandas, ni Spark, ni Docker, ni installation de dépendances pour cette préparation locale.
+Le script utilise uniquement la bibliothèque standard et fonctionne avec Python 3.11 ou plus récent. Il ne nécessite ni pandas, ni Spark, ni Docker, ni installation de dépendances pour cette préparation locale. Un nouveau téléchargement crée un instantané des métadonnées et actualise le manifeste. Pour travailler avec les données déjà partagées, privilégier `--audit-only`.
 
 Il récupère dix fichiers du dataset existant sur Kaggle. Il ne collecte rien directement sur le site Hespress. À la seconde exécution, il vérifie les fichiers présents par leur empreinte et les réutilise. Un original modifié ou non reconnu provoque une erreur explicite.
 

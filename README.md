@@ -55,21 +55,21 @@ Le dépôt contient la documentation, l’infographie, la configuration du clust
 
 ## Données Hespress : première étape
 
-Les catégories politique, économie, société, sport et art et culture représentent **139 166 commentaires et 5 000 articles**. Les originaux locaux sont conservés dans `data/raw/hespress/v1/`, avec leur provenance et leurs empreintes SHA-256.
+Les catégories politique, économie, société, sport et art et culture représentent **139 166 commentaires et 5 000 articles**. Les dix CSV originaux sont partagés dans `data/raw/hespress/v1/`, avec leur provenance et leurs empreintes SHA-256 (environ 91 Mo au total). Ils proviennent du [dataset Hespress de Tariq Massaoudi](https://www.kaggle.com/datasets/tariqmassaoudi/hespress), dont le déposant déclare une licence CC0. L’échantillon initial de 1 000 commentaires est également partagé dans `data/processed/hespress/comments_sample.csv`.
 
-Pour reproduire la préparation, avec Python 3.11 ou plus récent et sans dépendance supplémentaire :
-
-```powershell
-python scripts/prepare_hespress.py
-```
-
-Pour vérifier les fichiers déjà récupérés sans accès réseau :
+Après avoir récupéré la branche `feature/docker-compose`, les fichiers sont déjà disponibles. Pour vérifier leur intégrité et reproduire l’échantillon sans accès réseau, avec Python 3.11 ou plus récent :
 
 ```powershell
 python scripts/prepare_hespress.py --audit-only
 ```
 
-Le script produit aussi un échantillon de 1 000 commentaires à annoter. Le sentiment et le thème du commentaire ne sont pas inventés ; la rubrique de l’article reste une information de contexte. Les fichiers de données restent exclus de Git.
+Pour récupérer les originaux depuis Kaggle si les fichiers n’ont pas encore été téléchargés :
+
+```powershell
+python scripts/prepare_hespress.py
+```
+
+Le sentiment et le thème à annoter restent vides ; la rubrique de l’article fournit une information de contexte. Les copies annotées de chaque membre et les autres sorties locales restent exclues de Git. Les originaux partagés doivent rester intacts ; les règles `.gitattributes` préservent leurs octets et leurs empreintes sur Windows et Linux.
 
 Voir le [guide du premier TP](docs/datasets/HESPRESS_GUIDE.md), le [rapport d’audit](docs/datasets/HESPRESS_AUDIT.md) et le [choix des datasets](docs/datasets/DATASET_DECISION.md).
 

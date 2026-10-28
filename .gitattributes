@@ -1,0 +1,4 @@
+# Préserver les octets des CSV partagés, y compris les fins de ligne.
+# Les empreintes SHA-256 doivent être identiques sur Windows et Linux.
+data/raw/hespress/v1/*.csv -text
+data/processed/hespress/comments_sample.csv -text

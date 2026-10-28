@@ -147,3 +147,5 @@ L'annotation, la validation du contrat et l'intégration sont communes aux trois
 Pendant la recherche initiale, les fichiers ont seulement été inspectés en mémoire. Après validation du choix, les dix CSV des cinq catégories Hespress ont été téléchargés le 28 octobre 2026 : **139 166 commentaires et 5 000 articles**, avec 100 % de correspondances commentaire–article dans chaque catégorie. Un échantillon de 1 000 commentaires sans labels inventés a été préparé.
 
 Voir [le guide de récupération et de lecture](HESPRESS_GUIDE.md) et [le rapport d'audit](HESPRESS_AUDIT.md). Aucun modèle n'a été entraîné et aucun résultat de performance n'est revendiqué.
+
+Les dix originaux Hespress et leur provenance sont désormais destinés au partage dans le dépôt GitHub, avec l'échantillon initial. Les autres datasets et les copies d'annotation individuelles restent locaux. Les CSV partagés conservent leurs octets grâce aux règles `.gitattributes`, ce qui permet de contrôler les empreintes après récupération sur un autre système.
