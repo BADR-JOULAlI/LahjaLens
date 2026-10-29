@@ -121,7 +121,7 @@ Commencer par les catégories `politique`, `economie`, `societe`, `sport`, `art-
 6. Faire annoter un sous-ensemble par deux membres, puis résoudre les désaccords avec le troisième. Distinguer sujet du commentaire, contexte de l'article et sentiment.
 7. Préparer ensuite la conversion en événements Kafka et l'archivage HDFS.
 
-Le contrat actuel rend `event_time` obligatoire. Avant d'importer un corpus sans date de commentaire, prévoir explicitement une valeur inconnue et un champ indiquant l'origine du temps utilisé. Conserver séparément `article_published_at`, `ingestion_time` et `replay_time`. Cette évolution du contrat n'est pas implémentée par le présent document.
+Le contrat dans `src/schemas/events.py` accepte désormais une date de commentaire inconnue (`event_time=null`). Il conserve séparément `article_date_raw`, `article_published_at`, `ingestion_time` et `replay_time`. L'identifiant, le titre et la rubrique de l'article restent des métadonnées source. Les règles figurent dans `MASTER_SPEC.md`, section 5. Le producteur `src/streaming/producer.py` lit l'échantillon préparé ; voir le [TP Kafka](../KAFKA_TP.md).
 
 ### Répartition immédiate entre trois personnes
 

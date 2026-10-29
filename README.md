@@ -73,6 +73,22 @@ Le sentiment et le thème à annoter restent vides ; la rubrique de l’article 
 
 Voir le [guide du premier TP](docs/datasets/HESPRESS_GUIDE.md), le [rapport d’audit](docs/datasets/HESPRESS_AUDIT.md) et le [choix des datasets](docs/datasets/DATASET_DECISION.md).
 
+## Premier replay Kafka
+
+Valider un lot équilibré de 100 commentaires sans connexion Kafka :
+
+```powershell
+python -m src.streaming.producer --dry-run --limit 100
+```
+
+Avec le client `kafka-python-ng` installé, Kafka démarré et le topic `comments.raw` créé :
+
+```powershell
+python -m src.streaming.producer --limit 100 --delay 0.2
+```
+
+Le producteur utilise l'échantillon préparé, conserve ses identifiants et compte uniquement les envois confirmés par le broker. Voir le [TP Kafka](docs/KAFKA_TP.md) pour les prérequis et le test dans deux terminaux.
+
 ---
 
 # Conventions de développement

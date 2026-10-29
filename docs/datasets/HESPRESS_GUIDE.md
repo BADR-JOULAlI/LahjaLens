@@ -135,6 +135,16 @@ Le script refuse de remplacer un échantillon dont les colonnes d'annotation ont
 
 ## Étape suivante
 
-Examiner ensemble quelques commentaires, définir les règles d'annotation des thèmes et du sentiment, puis annoter un petit lot commun. Le contrat Kafka devra ensuite prévoir explicitement les dates de commentaires inconnues avant l'importation de ce corpus.
+Le contrat d'événement est adapté dans `src/schemas/events.py`. Il accepte `event_time=null` pour les commentaires sans date et conserve séparément le contexte de l'article. Les dates normalisées connues doivent avoir un fuseau et se sérialisent en UTC ; `article_date_raw` conserve la valeur originale. `article_topic` décrit la rubrique de l'article, tandis que `theme_label` reste une annotation à effectuer.
+
+Pour vérifier le contrat et les protections du téléchargement :
+
+```powershell
+python -m unittest discover -s tests -p "test_*.py" -v
+```
+
+Le producteur Kafka est disponible dans `src/streaming/producer.py`. Il lit l'échantillon, sélectionne un lot équilibré de 100 commentaires, conserve les identifiants stables et convertit les dates inconnues en `null`. Son mode `--dry-run` fonctionne sans Kafka. Le [TP Kafka](../KAFKA_TP.md) explique la validation et l'envoi réel dans `comments.raw`.
+
+L'équipe peut en parallèle examiner quelques commentaires, définir les règles d'annotation et annoter un petit lot commun.
 
 Les contrôles détaillés et les empreintes des dix fichiers figurent dans [HESPRESS_AUDIT.md](HESPRESS_AUDIT.md).
