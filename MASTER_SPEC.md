@@ -73,11 +73,31 @@ MSDA peut servir à la classification à trois sentiments après vérification d
       "comment_text": "string",
       "source": "string",
       "language": "darija|arabe|français|mixte|inconnu",
-      "event_time": "ISO-8601 datetime",
-      "ingestion_time": "ISO-8601 datetime"
+      "event_time": "ISO-8601 datetime avec fuseau, ou null",
+      "ingestion_time": "ISO-8601 datetime avec fuseau",
+      "article_id": "string ou null",
+      "article_title": "string ou null",
+      "article_topic": "string ou null",
+      "article_date_raw": "string ou null",
+      "article_published_at": "ISO-8601 datetime avec fuseau, ou null",
+      "replay_time": "ISO-8601 datetime avec fuseau, ou null"
     }
 
-Règles : event_id est obligatoire et stable ; comment_text est obligatoire et non vide ; source indique la provenance réelle ; event_time est la date du commentaire ; ingestion_time est la date d’entrée dans la plateforme. Les données invalides sont signalées et non supprimées silencieusement.
+Le contrat est implémenté dans `src/schemas/events.py`. `event_id` est obligatoire et stable ; `comment_text` est obligatoire et non vide ; `source` indique la provenance réelle. Les données invalides sont signalées et non supprimées silencieusement.
+
+| Champ temporel | Signification et règle |
+|---|---|
+| `event_time` | Date de publication du commentaire. Vaut `null` si elle est inconnue. |
+| `ingestion_time` | Date d'entrée du commentaire dans la plateforme. Obligatoire. |
+| `article_date_raw` | Date originale de l'article, conservée exactement comme dans la source. |
+| `article_published_at` | Date de l'article normalisée, à remplir uniquement après conversion fiable avec fuseau horaire. |
+| `replay_time` | Heure d'envoi lors d'un replay historique. Facultative. |
+
+Les datetimes connus sont sérialisés en UTC avec le suffixe `Z`. La date de l'article, l'ingestion et le replay ne remplacent jamais une date de commentaire inconnue. Les chaînes vides ne sont pas des dates JSON valides : le lecteur CSV devra convertir une date manquante en `None`, puis `null` en JSON. Les champs optionnels absents du mapping sont normalisés à `null`.
+
+Les métadonnées d'article sont facultatives. Si un titre, une catégorie ou une date d'article est fourni, `article_id` est obligatoire pour rattacher ce contexte à sa source. `article_topic` est une rubrique éditoriale et ne constitue pas un thème du commentaire validé. Le sentiment et le thème prédit appartiendront aux résultats d'analyse, pas à ces champs source.
+
+Pour Hespress : `source=hespress`, `language=inconnu` tant que la langue n'est pas vérifiée, `event_time=null`, `article_published_at=null` tant que la date source n'a pas été interprétée. Les anciens événements à six champs avec une date de commentaire connue restent acceptés. Le constructeur Python conserve l'ordre de ses six paramètres initiaux ; une date inconnue se transmet explicitement avec `event_time=None`.
 
 ## 6. Contrat du corpus annoté
 

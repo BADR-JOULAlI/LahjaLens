@@ -180,9 +180,18 @@ Chaque étudiant doit comprendre l’architecture complète et contribuer aux in
       "event_id": "string",
       "comment_text": "string",
       "source": "string",
-      "event_time": "ISO-8601 datetime",
-      "language": "darija|arabe|français|mixte|inconnu"
+      "event_time": "ISO-8601 datetime avec fuseau, ou null",
+      "ingestion_time": "ISO-8601 datetime avec fuseau",
+      "language": "darija|arabe|français|mixte|inconnu",
+      "article_id": "string ou null",
+      "article_title": "string ou null",
+      "article_topic": "string ou null",
+      "article_date_raw": "string ou null",
+      "article_published_at": "ISO-8601 datetime avec fuseau, ou null",
+      "replay_time": "ISO-8601 datetime avec fuseau, ou null"
     }
+
+Les métadonnées `article_*` décrivent le contexte source. Pour Hespress, la date du commentaire reste inconnue (`event_time=null`). La date de l'article et l'heure du replay ne servent pas de remplacement. Voir `MASTER_SPEC.md`, section 5, pour les règles et `src/schemas/events.py` pour leur validation.
 
 Le contrat final doit documenter :
 
