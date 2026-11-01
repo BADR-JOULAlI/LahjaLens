@@ -1,0 +1,179 @@
+{
+  "communities": {
+    "0": [
+      "src_schemas_events_commentevent",
+      "src_schemas_events_commentevent_post_init",
+      "src_schemas_events_commentevent_to_mapping",
+      "src_schemas_events_rationale_137",
+      "src_schemas_events_rationale_89",
+      "src_schemas_events_rationale_99"
+    ],
+    "1": [
+      "any",
+      "src_schemas_events_commentevent_from_mapping",
+      "src_schemas_events_parse_language",
+      "src_schemas_events_rationale_120",
+      "src_schemas_events_rationale_73"
+    ],
+    "2": [
+      "datetime",
+      "src_schemas_events",
+      "src_schemas_events_parse_datetime",
+      "src_schemas_events_rationale_1",
+      "src_schemas_events_rationale_49"
+    ],
+    "3": [
+      "src_schemas_events_language",
+      "src_schemas_events_rationale_16",
+      "src_schemas_events_rationale_26",
+      "src_schemas_events_sentiment",
+      "strenum"
+    ],
+    "4": [
+      "src_schemas_events_labeledcomment",
+      "src_schemas_events_labeledcomment_to_mapping",
+      "src_schemas_events_rationale_153",
+      "src_schemas_events_rationale_190"
+    ],
+    "5": [
+      "src_schemas_events_eventvalidationerror",
+      "src_schemas_events_rationale_34",
+      "valueerror"
+    ],
+    "6": [
+      "src_schemas_events_labeledcomment_from_mapping",
+      "src_schemas_events_rationale_162"
+    ],
+    "7": [
+      "src_schemas_events_rationale_38",
+      "src_schemas_events_require_text"
+    ],
+    "8": [
+      "pkg_lahjalens"
+    ]
+  },
+  "cohesion": {
+    "0": 0.3333333333333333,
+    "1": 0.5,
+    "2": 0.5,
+    "3": 0.4,
+    "4": 0.5,
+    "5": 0.6666666666666666,
+    "6": 1.0,
+    "7": 1.0,
+    "8": 1.0
+  },
+  "gods": [
+    {
+      "id": "src_schemas_events_eventvalidationerror",
+      "label": "EventValidationError",
+      "degree": 9
+    },
+    {
+      "id": "src_schemas_events_parse_language",
+      "label": "_parse_language()",
+      "degree": 7
+    },
+    {
+      "id": "src_schemas_events_require_text",
+      "label": "_require_text()",
+      "degree": 6
+    },
+    {
+      "id": "src_schemas_events_parse_datetime",
+      "label": "_parse_datetime()",
+      "degree": 6
+    },
+    {
+      "id": "src_schemas_events_commentevent",
+      "label": "CommentEvent",
+      "degree": 5
+    },
+    {
+      "id": "src_schemas_events_language",
+      "label": "Language",
+      "degree": 4
+    },
+    {
+      "id": "src_schemas_events_sentiment",
+      "label": "Sentiment",
+      "degree": 4
+    },
+    {
+      "id": "src_schemas_events_labeledcomment",
+      "label": "LabeledComment",
+      "degree": 4
+    },
+    {
+      "id": "src_schemas_events_rationale_1",
+      "label": "Contrats et validation des \u00e9v\u00e9nements de commentaires LahjaLens. Ce module ne\u2026",
+      "degree": 1
+    },
+    {
+      "id": "src_schemas_events_rationale_16",
+      "label": "Langues admises par le contrat d'\u00e9v\u00e9nement.",
+      "degree": 1
+    }
+  ],
+  "surprises": [
+    {
+      "source": "_parse_language()",
+      "target": "Language",
+      "source_files": [
+        "src/schemas/events.py",
+        "src/schemas/events.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 3 \u2192 community 1"
+    },
+    {
+      "source": "_parse_datetime()",
+      "target": "EventValidationError",
+      "source_files": [
+        "src/schemas/events.py",
+        "src/schemas/events.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 5 \u2192 community 2"
+    },
+    {
+      "source": "_parse_language()",
+      "target": "EventValidationError",
+      "source_files": [
+        "src/schemas/events.py",
+        "src/schemas/events.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 5 \u2192 community 1"
+    },
+    {
+      "source": "_require_text()",
+      "target": "EventValidationError",
+      "source_files": [
+        "src/schemas/events.py",
+        "src/schemas/events.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 5 \u2192 community 7"
+    },
+    {
+      "source": "_require_text()",
+      "target": "Any",
+      "source_files": [
+        "src/schemas/events.py",
+        ""
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "note": "Bridges community 7 \u2192 community 1"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
