@@ -51,7 +51,27 @@ Le fichier maître attendu est `DARIJAPULSE_CODEX_MASTER_SPEC.md`. Il doit être
 
 ## État actuel
 
-Le dépôt contient actuellement la documentation de démarrage et l’infographie de l’architecture. Les composants data, ML, analytics et streaming seront ajoutés progressivement.
+Le dépôt contient la documentation, l’infographie, la configuration du cluster Docker, les contrats d’événements et le script de préparation du corpus Hespress. Les jobs Spark, les modèles ML et le dashboard restent à développer.
+
+## Données Hespress : première étape
+
+Les catégories politique, économie, société, sport et art et culture représentent **139 166 commentaires et 5 000 articles**. Les dix CSV originaux sont partagés dans `data/raw/hespress/v1/`, avec leur provenance et leurs empreintes SHA-256 (environ 91 Mo au total). Ils proviennent du [dataset Hespress de Tariq Massaoudi](https://www.kaggle.com/datasets/tariqmassaoudi/hespress), dont le déposant déclare une licence CC0. L’échantillon initial de 1 000 commentaires est également partagé dans `data/processed/hespress/comments_sample.csv`.
+
+Après avoir récupéré la branche `feature/docker-compose`, les fichiers sont déjà disponibles. Pour vérifier leur intégrité et reproduire l’échantillon sans accès réseau, avec Python 3.11 ou plus récent :
+
+```powershell
+python scripts/prepare_hespress.py --audit-only
+```
+
+Pour récupérer les originaux depuis Kaggle si les fichiers n’ont pas encore été téléchargés :
+
+```powershell
+python scripts/prepare_hespress.py
+```
+
+Le sentiment et le thème à annoter restent vides ; la rubrique de l’article fournit une information de contexte. Les copies annotées de chaque membre et les autres sorties locales restent exclues de Git. Les originaux partagés doivent rester intacts ; les règles `.gitattributes` préservent leurs octets et leurs empreintes sur Windows et Linux.
+
+Voir le [guide du premier TP](docs/datasets/HESPRESS_GUIDE.md), le [rapport d’audit](docs/datasets/HESPRESS_AUDIT.md) et le [choix des datasets](docs/datasets/DATASET_DECISION.md).
 
 ---
 
@@ -167,4 +187,4 @@ Ne pas avancer automatiquement vers le fichier suivant. L’utilisateur doit exa
 
 ## État initial
 
-Le fichier `DARIJAPULSE_CODEX_MASTER_SPEC.md` doit être placé à la racine du projet avant toute étape qui dépend de contrats, chemins ou critères non reproduits dans ce document. Tant qu’il est absent, demander sa mise à disposition lorsqu’une décision ne peut pas être prise de manière fiable.
+Le fichier `MASTER_SPEC.md` doit être placé à la racine du projet avant toute étape qui dépend de contrats, chemins ou critères non reproduits dans ce document. Tant qu’il est absent, demander sa mise à disposition lorsqu’une décision ne peut pas être prise de manière fiable.
