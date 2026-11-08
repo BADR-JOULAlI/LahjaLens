@@ -59,6 +59,8 @@ services:
     volumes:
       - spark_master_logs:/opt/spark/logs
       - ./data:/opt/lahjalens/data
+      - ./src:/opt/lahjalens/src
+      - ./scripts:/opt/lahjalens/scripts
 
     restart: unless-stopped
 
@@ -90,6 +92,8 @@ services:
     volumes:
       - spark_worker_1_logs:/opt/spark/logs
       - ./data:/opt/lahjalens/data
+      - ./src:/opt/lahjalens/src
+      - ./scripts:/opt/lahjalens/scripts
 
     restart: unless-stopped
 
@@ -121,6 +125,8 @@ services:
     volumes:
       - spark_worker_2_logs:/opt/spark/logs
       - ./data:/opt/lahjalens/data
+      - ./src:/opt/lahjalens/src
+      - ./scripts:/opt/lahjalens/scripts
 
     restart: unless-stopped
 

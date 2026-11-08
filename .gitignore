@@ -36,7 +36,8 @@ volumes/
 # IDE & Editeurs
 .vscode/
 .idea/
-
+#  rapport
+rapports/
 # Données brutes locales, sauf le corpus Hespress v1 partagé.
 data/raw/*
 !data/raw/.gitkeep

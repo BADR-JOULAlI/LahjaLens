@@ -1,4 +1,3 @@
-
 """Consommation Kafka avec Spark Structured Streaming et stockage HDFS."""
 
 from pyspark.sql import SparkSession
@@ -44,7 +43,7 @@ def main():
 
     spark.sparkContext.setLogLevel("WARN")
 
-    # Schéma conforme au contrat CommentEvent.
+    # SchǸma conforme au contrat CommentEvent.
     event_schema = StructType([
         StructField("event_id", StringType(), True),
         StructField("comment_text", StringType(), True),
@@ -66,7 +65,7 @@ def main():
         .load()
     )
 
-    # Conversion du JSON Kafka en colonnes structurées.
+    # Conversion du JSON Kafka en colonnes structurǸes.
     parsed_stream = (
         kafka_stream
         .select(
@@ -78,7 +77,7 @@ def main():
         .select("event.*")
     )
 
-    # Conservation des événements respectant les champs obligatoires.
+    # Conservation des ǸvǸnements respectant les champs obligatoires.
     valid_stream = parsed_stream.filter(
         col("event_id").isNotNull()
         & (col("event_id") != "")
@@ -89,8 +88,8 @@ def main():
         & col("replay_time").isNotNull()
     )
 
-    # ingestion_time correspond à l'heure réelle de traitement
-    # si le producteur ne l'a pas renseignée.
+    # ingestion_time correspond  l'heure rǸelle de traitement
+    # si le producteur ne l'a pas renseignǸe.
     bronze_stream = valid_stream.withColumn(
         "ingestion_time",
         coalesce(
@@ -102,14 +101,24 @@ def main():
         ),
     )
 
-    # Écriture continue au format Parquet dans HDFS.
+    # DǸclenchement : disponible immǸdiatement (test) ou continu (dǸmon)
+    trigger_available_now = (
+        os.getenv("STREAMING_AVAILABLE_NOW", "false").lower() in ("true", "1", "yes")
+    )
+    trigger_kwargs = (
+        {"availableNow": True}
+        if trigger_available_now
+        else {"processingTime": "10 seconds"}
+    )
+
+    # %criture au format Parquet dans HDFS.
     query = (
         bronze_stream.writeStream
         .format("parquet")
         .outputMode("append")
         .option("path", HDFS_OUTPUT_PATH)
         .option("checkpointLocation", HDFS_CHECKPOINT_PATH)
-        .trigger(processingTime="10 seconds")
+        .trigger(**trigger_kwargs)
         .start()
     )
 
@@ -117,7 +126,11 @@ def main():
     print(f"Topic Kafka : {KAFKA_TOPIC}")
     print(f"Destination HDFS : {HDFS_OUTPUT_PATH}")
 
-    query.awaitTermination()
+    timeout_sec = os.getenv("STREAMING_TIMEOUT_SEC")
+    if timeout_sec:
+        query.awaitTermination(timeout=int(timeout_sec))
+    else:
+        query.awaitTermination()
 
 
 if __name__ == "__main__":
