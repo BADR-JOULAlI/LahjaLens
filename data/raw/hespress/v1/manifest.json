@@ -1,0 +1,70 @@
+{
+  "dataset": "tariqmassaoudi/hespress",
+  "version": 1,
+  "source_url": "https://www.kaggle.com/datasets/tariqmassaoudi/hespress",
+  "files": {
+    "comments_politique.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/comments_politique.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:20.241750Z",
+      "bytes": 23761923,
+      "sha256": "48d2792aeab4e08f1e268788b0b23c5775cd5f39e3b85c60952776adfcaf8b30"
+    },
+    "stories_politique.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/stories_politique.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:21.607445Z",
+      "bytes": 4179258,
+      "sha256": "63f20cb3225e4fed8aa435e2309645bb40f4571290a0902894454e34c62858e7"
+    },
+    "comments_economie.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/comments_economie.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:23.261653Z",
+      "bytes": 14221861,
+      "sha256": "543b337848972da9a42844c3c3aa68eaae7cd55a3bca580861a87f8e26c891e7"
+    },
+    "stories_economie.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/stories_economie.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:24.596742Z",
+      "bytes": 4189145,
+      "sha256": "e9403d979e5ec3946a833e4b2cfdc0ef283a59e0d217280147b0776de1b4adbc"
+    },
+    "comments_societe.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/comments_societe.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:26.704925Z",
+      "bytes": 24473129,
+      "sha256": "b483c4efe2f0e1fc507e21aacc5dec2c572032ec93af7854de36462ab7f123a1"
+    },
+    "stories_societe.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/stories_societe.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:28.289745Z",
+      "bytes": 4064549,
+      "sha256": "4438dd3df756b3b59ac42981a48e7dc568d05ec81ab0342749ac528a8348015e"
+    },
+    "comments_sport.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/comments_sport.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:29.687646Z",
+      "bytes": 3602117,
+      "sha256": "3787b524fb51a25af1e577ba98cff2eb708b833afee2bab84e0e1d1780a9f04d"
+    },
+    "stories_sport.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/stories_sport.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:31.110430Z",
+      "bytes": 2750758,
+      "sha256": "447837105b3f7573e52dc020da87f650c2209ee0a40f74496edaa8215d9f5448"
+    },
+    "comments_art-et-culture.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/comments_art-et-culture.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:32.513091Z",
+      "bytes": 5060169,
+      "sha256": "1b049886aac3e020b03b391c27f8f59e1b8532c9996c7a875ee84524cd1fb216"
+    },
+    "stories_art-et-culture.csv": {
+      "source_url": "https://www.kaggle.com/api/v1/datasets/download/tariqmassaoudi/hespress/stories_art-et-culture.csv?datasetVersionNumber=1",
+      "downloaded_at": "2026-10-28T21:35:33.911848Z",
+      "bytes": 5113797,
+      "sha256": "f9a439ebc0cffb4044f4061b8e491cffede7e18992d92e9b024f202bf8f8813f"
+    }
+  },
+  "license_declared_by_publisher": "CC0: Public Domain",
+  "metadata_checked_at": "2026-10-28T21:35:18.299311Z",
+  "metadata_file": "source_metadata_20261028T213518299311Z.json"
+}
