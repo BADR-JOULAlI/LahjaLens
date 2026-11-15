@@ -13,7 +13,7 @@ Construire en 7 semaines un pipeline Big Data reproductible qui :
 - présente les résultats dans Streamlit + Plotly ;
 - fonctionne sur un cluster distribué simulé avec Docker.
 
-Le projet est réalisé par quatre étudiants. L’intégration, les tests, la documentation et la démonstration sont des responsabilités collectives.
+Le projet est réalisé par trois étudiants. Les grandes fonctionnalités sont divisées en sous-tâches afin que chaque membre contribue aux données, à Kafka/Spark, au Machine Learning et à la validation finale.
 
 ## 2. Architecture obligatoire
 
@@ -87,9 +87,9 @@ Contraintes :
 
 Les dépendances, variables d’environnement et fichiers Docker sont préparés par les membres responsables de l’infrastructure.
 
-## 5. Répartition entre quatre étudiants
+## 5. Répartition entre trois étudiants
 
-### Étudiant 1 — Infrastructure et cluster
+### Membre 1 — Cluster, Data Lake et validation HDFS
 
 Responsabilités :
 
@@ -111,7 +111,7 @@ Livrables principaux :
     requirements.txt ou pyproject.toml
     docs/runbook.md
 
-### Étudiant 2 — Ingestion, Kafka et archivage HDFS
+### Membre 2 — Données, Kafka et Spark Streaming
 
 Responsabilités :
 
@@ -131,7 +131,7 @@ Livrables principaux :
     tests/test_ingestion.py
     docs/data-contracts.md
 
-### Étudiant 3 — Analyse batch et Machine Learning
+### Membre 3 — Analyse batch, Machine Learning et restitution
 
 Responsabilités :
 
@@ -152,25 +152,7 @@ Livrables principaux :
     tests/test_ml.py
     docs/ml-report.md
 
-### Étudiant 4 — Streaming, restitution et dashboard
-
-Responsabilités :
-
-- chargement du modèle sauvegardé au démarrage ;
-- prédiction sur les nouveaux événements Kafka ;
-- checkpoints et reprise ;
-- écritures PostgreSQL ;
-- dashboard Streamlit + Plotly ;
-- vérification du délai observé et de l’actualisation.
-
-Livrables principaux :
-
-    streaming/
-    dashboard/
-    tests/test_streaming.py
-    tests/test_dashboard.py
-
-Chaque étudiant doit comprendre l’architecture complète et contribuer aux intégrations hebdomadaires.
+Chaque membre doit comprendre l’architecture complète et contribuer aux intégrations hebdomadaires. Pour chaque grande tâche, un membre développe, un deuxième relit et un troisième réalise une vérification d’intégration. Aucun membre ne reste limité à une seule couche.
 
 ## 6. Contrats de données
 
@@ -400,7 +382,7 @@ Le dépôt GitHub doit contenir :
 - dashboard ;
 - tests ;
 - rapport professionnel de 20 pages maximum ;
-- tableau des contributions des quatre étudiants.
+- tableau des contributions des trois étudiants.
 
 La vidéo doit durer environ 10 minutes et présenter le cas métier, l’architecture, le démarrage du cluster, les résultats ML, la comparaison, le tuning et le flux actif jusqu’au dashboard.
 
@@ -419,5 +401,5 @@ Le projet est réussi si :
 - les résultats sont écrits en base ;
 - les métriques et le tuning sont interprétés ;
 - le dépôt permet de reproduire le scénario ;
-- les contributions des quatre étudiants sont documentées.
+- les contributions des trois étudiants sont documentées.
 

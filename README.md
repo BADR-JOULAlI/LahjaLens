@@ -33,6 +33,10 @@ Corpus annoté ──► Spark MLlib ────────┘                
 - Streamlit et Plotly pour les KPI, tendances, thèmes et sources
 - Docker Compose pour le cluster complet : Spark, HDFS, Kafka, PostgreSQL et MLflow
 
+## Cours pour comprendre le projet
+
+Le [cours technique et théorique LahjaLens](docs/COURS_LAHJALENS.md) explique les concepts du projet, du CSV au dashboard : Docker, HDFS, Kafka, Spark, NLP, labels, déséquilibre des classes, Machine Learning, MLflow et Git. Il comprend un parcours de lecture, des exemples, huit TP et dix exercices corrigés.
+
 La préparation du corpus de sentiment est documentée dans le [pipeline AfriSenti](docs/datasets/AFRISENTI_PIPELINE.md). Hespress reste utilisé pour le contexte des articles et les thèmes ; AfriSenti fournit les labels `negative`, `neutral` et `positive` pour l'entraînement supervisé.
 
 Le [diagnostic du sentiment du 15 novembre](docs/datasets/SENTIMENT_DIAGNOSTIC.md) explique le décalage entre les écritures arabe et latine, les corrections testées et leurs limites. Le [notebook 05](notebooks/05_sentiment_script_aware.ipynb) fournit la nouvelle baseline expérimentale ; son macro-F1 test est de 56,99 %, sans validation actuelle du transfert à Hespress.

@@ -1,6 +1,6 @@
 # LahjaLens — Spécification technique du projet
 
-> Statut : spécification interne provisoire. Aucun cahier des charges officiel n’ayant été fourni, ce document formalise les décisions actuelles du projet.
+> Statut : spécification interne alignée sur la fiche de projet Big Data 2026. Cette fiche est la référence pour la topologie Docker et les critères de démonstration.
 
 ## 1. Objectif
 
@@ -42,16 +42,28 @@ Kafka sert au replay historique et à la démonstration du streaming. Il ne repr
 
 ## 3. Stack technique
 
-- Ubuntu 24.04 sous WSL2 ;
+- Docker Engine avec un hôte Windows ou Linux ;
 - Python 3.11 et Java 11 ;
-- HDFS 3.4.2 existant ;
-- PySpark 3.5.7 en mode local ;
+- HDFS 3.4.2 dans le cluster Docker ;
+- PySpark 3.5.7 exécuté sur le cluster `spark-master` avec deux Workers ;
 - Apache Kafka 3.9.x en mode KRaft ;
 - spark-sql-kafka-0-10_2.12 ;
 - Spark MLlib, MLflow, PostgreSQL ;
 - Streamlit, Plotly et Docker Compose.
 
-Hadoop ne doit pas être réinstallé. Le GPU est réservé aux extensions Transformer et n’est pas requis pour le MVP.
+Le mode local peut servir uniquement à un test unitaire très court, mais il ne constitue pas une validation du projet. Toute démonstration Spark, tout traitement batch et tout traitement Structured Streaming doivent être lancés sur `spark://spark-master:7077`. Le GPU est réservé aux extensions Transformer et n’est pas requis pour le MVP.
+
+## 3 bis. Cluster Docker obligatoire
+
+Le cluster de démonstration doit contenir au minimum :
+
+- un `spark-master` ;
+- deux Workers Spark distincts (`spark-worker-1` et `spark-worker-2`) ;
+- un `namenode` HDFS ;
+- deux DataNodes HDFS distincts (`datanode-1` et `datanode-2`) ;
+- Kafka, PostgreSQL et MLflow comme services complémentaires.
+
+Les traitements Spark doivent utiliser le Master et les deux Workers. HDFS doit utiliser les deux DataNodes avec `dfs.replication=2`. Chaque service de stockage doit utiliser son volume Docker persistant et distinct. Le démarrage du cluster, l’utilisation des Workers, la réplication HDFS et la lecture effective depuis Kafka doivent être vérifiés avant la démonstration de la première semaine.
 
 ## 4. Sources de données
 
@@ -168,7 +180,7 @@ Un seul fichier est créé ou modifié par étape. Chaque étape est testée et 
 
 ## 12. Ressources et décisions à confirmer
 
-Le projet doit rester compatible avec 32 Go de RAM, un Core Ultra 7, une RTX 5070 de 8 Go, Spark local et HDFS sous WSL2.
+Le projet doit rester compatible avec 32 Go de RAM, un Core Ultra 7 et une RTX 5070 de 8 Go. L’environnement de référence est le cluster Docker complet décrit à la section 3 bis ; une installation HDFS séparée sous WSL2 n’est pas requise pour la démonstration.
 
 Restent à confirmer : chemins HDFS définitifs, dataset final, règles de déduplication, modèle ML, stratégie de thèmes, paramètres Kafka et critères d’évaluation du professeur.
 
