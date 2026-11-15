@@ -97,6 +97,12 @@ python -m src.streaming.producer --limit 100 --delay 0.2
 
 Le producteur utilise l'échantillon préparé, conserve ses identifiants et compte uniquement les envois confirmés par le broker. Voir le [TP Kafka](docs/KAFKA_TP.md) pour les prérequis et le test dans deux terminaux.
 
+## Data Warehouse et dashboard
+
+Après l’inférence E2, le flux Gold peut être chargé dans PostgreSQL puis consulté
+dans **LahjaLens Analytics** avec Streamlit et Plotly. Les commandes et les
+contrats sont documentés dans [WAREHOUSE_DASHBOARD.md](docs/WAREHOUSE_DASHBOARD.md).
+
 ---
 
 # Conventions de développement

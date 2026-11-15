@@ -1,0 +1,13 @@
+.git
+.venv
+__pycache__
+.pytest_cache
+data/raw
+data/annotated
+data/processed
+graphify-out
+notebooks
+tests
+docs
+volumes
+*.ipynb_checkpoints

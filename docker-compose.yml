@@ -167,6 +167,57 @@ services:
       - mlflow_data:/mlflow
     restart: unless-stopped
 
+  warehouse-loader:
+    build:
+      context: .
+      dockerfile: Dockerfile.warehouse
+    container_name: lahjalens-warehouse-loader
+    hostname: warehouse-loader
+    depends_on:
+      postgres:
+        condition: service_healthy
+      spark-master:
+        condition: service_started
+      spark-worker-1:
+        condition: service_started
+      spark-worker-2:
+        condition: service_started
+    environment:
+      PYTHONPATH: /opt/lahjalens
+      SPARK_MASTER_URL: spark://spark-master:7077
+      SPARK_DRIVER_HOST: warehouse-loader
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: lahjalens_db
+      POSTGRES_USER: lahja_user
+      POSTGRES_PASSWORD: change_me
+      WAREHOUSE_BATCH_SIZE: 500
+    volumes:
+      - ./src:/opt/lahjalens/src:ro
+    command: bash -lc "tail -f /dev/null"
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: lahjalens-dashboard
+    hostname: dashboard
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: lahjalens_db
+      POSTGRES_USER: lahja_user
+      POSTGRES_PASSWORD: change_me
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./apps:/opt/lahjalens/apps:ro
+    restart: unless-stopped
+
 volumes:
   kafka_data:
   spark_master_logs:
