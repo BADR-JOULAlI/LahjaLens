@@ -39,6 +39,7 @@ services:
     volumes:
       - spark_master_logs:/opt/spark/logs
       - ./data:/opt/lahjalens/data
+      - ./notebooks:/opt/lahjalens/notebooks:ro
     restart: unless-stopped
 
   spark-worker-1:

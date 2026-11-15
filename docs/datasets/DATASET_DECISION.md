@@ -2,6 +2,31 @@
 
 Recherche effectuée le 28 octobre 2026. Ce document propose un choix de départ pour l'équipe de trois personnes. Les statistiques annoncées par les auteurs et les vérifications effectuées sur les fichiers sont distinguées ci-dessous.
 
+## Mise à jour de décision — 15 novembre 2026
+
+Le diagnostic conserve AfriSenti `ary` et corrige la méthodologie : le train
+actuel n'a pas de classe à 70 %, mais le modèle échouait particulièrement sur
+les négatifs en écriture latine. Les nouvelles expériences sont exécutées dans
+le [notebook 05](../../notebooks/05_sentiment_script_aware.ipynb). Le
+[diagnostic complet](SENTIMENT_DIAGNOSTIC.md) distingue les progrès mesurés des
+limites restantes. Pour enrichir ensuite les données, cibler les sentiments en
+Arabizi et constituer une évaluation humaine indépendante sur la source cible.
+
+## Mise à jour de décision — 14 novembre 2026
+
+Le choix initial de MAC comme candidat sentiment est remplacé pour le démarrage
+par **AfriSenti, sous-ensemble marocain `ary`**. AfriSenti possède des labels
+humains `negative`, `neutral` et `positive`, des splits officiels et une
+licence CC BY 4.0. Le notebook reproductible est
+[`01_prepare_afrisenti.ipynb`](../../notebooks/01_prepare_afrisenti.ipynb) et son
+déroulement est décrit dans
+[`AFRISENTI_PIPELINE.md`](AFRISENTI_PIPELINE.md).
+
+MAC reste une piste comparative, mais ne doit pas être utilisé dans le train
+principal tant que ses conditions de réutilisation ne sont pas clarifiées.
+Hespress reste le corpus de contexte, de catégories et de thèmes ; ses votes
+ne sont pas des labels de sentiment.
+
 ## 1. Décision proposée
 
 Commencer par le corpus **Hespress de Tariq Massaoudi** pour l'ingestion, les catégories thématiques et la découverte de sujets. Sa fiche Kaggle déclare une licence CC0 et plus de 300 000 commentaires. Un fichier de commentaires et un fichier d'articles ont été effectivement lus pendant la recherche.

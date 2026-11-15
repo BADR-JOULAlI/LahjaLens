@@ -25,13 +25,17 @@ Corpus annoté ──► Spark MLlib ────────┘                
 
 - Python 3.11 et Parquet pour l’ingestion batch
 - Hadoop HDFS 3.4.2 comme data lake
-- PySpark 3.5.7 en mode local pour les traitements
+- PySpark 3.5.7 sur un cluster Docker composé d’un Master et de deux Workers
 - Apache Kafka 3.9.x en mode KRaft pour le replay et le streaming
 - Spark MLlib pour la classification de sentiment
 - MLflow pour le suivi des expériences ML
 - PostgreSQL pour la restitution analytique
 - Streamlit et Plotly pour les KPI, tendances, thèmes et sources
-- Docker Compose pour Kafka et PostgreSQL
+- Docker Compose pour le cluster complet : Spark, HDFS, Kafka, PostgreSQL et MLflow
+
+La préparation du corpus de sentiment est documentée dans le [pipeline AfriSenti](docs/datasets/AFRISENTI_PIPELINE.md). Hespress reste utilisé pour le contexte des articles et les thèmes ; AfriSenti fournit les labels `negative`, `neutral` et `positive` pour l'entraînement supervisé.
+
+Le [diagnostic du sentiment du 15 novembre](docs/datasets/SENTIMENT_DIAGNOSTIC.md) explique le décalage entre les écritures arabe et latine, les corrections testées et leurs limites. Le [notebook 05](notebooks/05_sentiment_script_aware.ipynb) fournit la nouvelle baseline expérimentale ; son macro-F1 test est de 56,99 %, sans validation actuelle du transfert à Hespress.
 
 ## Organisation du développement
 
@@ -41,7 +45,7 @@ Le fichier maître attendu est `DARIJAPULSE_CODEX_MASTER_SPEC.md`. Il doit être
 
 ## Principes
 
-- Ne pas réinstaller Hadoop : HDFS est déjà configuré sous WSL2.
+- Utiliser le cluster Docker exigé par la fiche : Spark Master, deux Workers, NameNode et deux DataNodes HDFS.
 - Respecter les contrats JSON et Parquet définis par la spécification.
 - N’entraîner les modèles que sur des exemples avec des labels fiables.
 - Utiliser Kafka pour le replay historique ou des événements issus d’une source autorisée.
@@ -51,7 +55,7 @@ Le fichier maître attendu est `DARIJAPULSE_CODEX_MASTER_SPEC.md`. Il doit être
 
 ## État actuel
 
-Le dépôt contient la documentation, l’infographie, la configuration du cluster Docker, les contrats d’événements et le script de préparation du corpus Hespress. Les jobs Spark, les modèles ML et le dashboard restent à développer.
+Le dépôt contient la documentation, l’infographie, la configuration du cluster Docker, les contrats d’événements et la préparation du corpus Hespress. Les notebooks de préparation et d'entraînement du sentiment AfriSenti ont été exécutés sur le cluster Spark, avec modèles et rapports enregistrés dans HDFS. L'intégration de cette baseline au pipeline de restitution et sa validation sur les commentaires Hespress restent à réaliser.
 
 ## Données Hespress : première étape
 
@@ -130,18 +134,17 @@ Ne pas créer de composant supplémentaire, de fichier de configuration ou de co
 
 ## Environnement cible
 
-- Ubuntu 24.04 sous WSL2 ;
 - Python 3.11 ;
 - Java 11 ;
-- Hadoop HDFS 3.4.2 déjà installé et configuré ;
-- PySpark 3.5.7 en mode local ;
+- Hadoop HDFS 3.4.2 dans Docker avec deux DataNodes ;
+- PySpark 3.5.7 exécuté par le cluster Spark ;
 - Apache Kafka 3.9.x en mode KRaft ;
 - MLflow ;
 - PostgreSQL ;
 - Streamlit et Plotly ;
-- Docker Compose pour Kafka et PostgreSQL uniquement lorsque prévu.
+- Docker Compose pour le cluster complet et ses services complémentaires.
 
-Ne pas réinstaller, remplacer ou reconfigurer Hadoop sans demande explicite. Respecter les ressources disponibles : Core Ultra 7, 32 Go de RAM et RTX 5070 avec 8 Go de VRAM. Le GPU est réservé aux extensions Transformer et ne doit pas être rendu obligatoire pour le MVP Spark MLlib.
+Le cluster HDFS de démonstration est celui défini dans `docker-compose.yml`. Respecter les ressources disponibles : Core Ultra 7, 32 Go de RAM et RTX 5070 avec 8 Go de VRAM. Le GPU est réservé aux extensions Transformer et ne doit pas être rendu obligatoire pour le MVP Spark MLlib. Les traitements Spark présentés doivent utiliser `spark://spark-master:7077`; `local[*]` est réservé aux tests rapides.
 
 ## Conventions de code
 
